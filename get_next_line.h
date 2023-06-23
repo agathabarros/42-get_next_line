@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agpereir <agpereir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agathabarros <agathabarros@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 17:22:25 by agpereir          #+#    #+#             */
-/*   Updated: 2023/06/08 11:56:30 by agpereir         ###   ########.fr       */
+/*   Updated: 2023/06/23 14:48:37 by agathabarro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,21 @@
 # include <unistd.h>
 # include <string.h>
 # include <stdlib.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <fcntl.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
 # endif
 
-char *get_next_line(int fd);
-
-//get_next_line_
-
-char *read_to_aux(int fd, char *str);
-char *new_aux(char *aux);
-char *get_line(char *aux);
-
+//get_next_line
+char	*get_keep(char *buffer);
+char	*get_line(char *buffer, int j);
+char	*get_next_line(int fd);
 //get_next_line_utils
-char    *ft_strjoin(char *s1, char *s2);
-char    *ft_strchr(char *buffer, int c);
-size_t  ft_strlen(const char *str);
-
+char	*ft_strncpy(char *dst, char *src, int n);
+char	*ft_strjoin(char *prev, char *curr);
+int		ft_strlen_at(char *str, char c);
+int		newline(char *l);
 #endif

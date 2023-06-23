@@ -3,77 +3,70 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agpereir <agpereir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agathabarros <agathabarros@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 16:44:57 by agpereir          #+#    #+#             */
-/*   Updated: 2023/06/08 12:08:25 by agpereir         ###   ########.fr       */
+/*   Updated: 2023/06/23 09:37:28 by agathabarro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char    *ft_strjoin(char *s1,  char *s2)
+int	ft_strlen_at(char *str, char c)
 {
-    char	*join;
-	int		i;
-	int		j;
+	int	i;
 
-	
-    if(!s1)
-    {
-        s1 = malloc(sizeof(char) * 1);
-        s1[0] = '\0';
-    }
-    i = ft_strlen(s1);
-	j = 0;
-    join = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) +1));
-	if (join == NULL )
+	i = 0;
+	if (!str)
 		return (0);
-	while (s1[i] != '\0')
+	while (str[i] && str[i] != c)
+		i++;
+	return (i);
+}
+
+int	newline(char *l)
+{
+	while (*l)
 	{
-		join[i] = s1[i];
+		if (*l == '\n')
+			return (1);
+		l++;
+	}
+	return (0);
+}
+
+char	*ft_strncpy(char *dst, char *src, int n)
+{
+	int	i;
+
+	i = 0;
+	while (src[i] && i < n)
+	{
+		dst[i] = src[i];
 		i++;
 	}
-	while (s2[j])
-	{
-		join[i + j] = s2[j];
-		j++;
-	}
-    free(s1);
-	join[i + j] = '\0';
-	return (join);
+	dst[i] = '\0';
+	return (dst);
 }
 
-char    *ft_strchr(char *buffer, int c)
+char	*ft_strjoin(char *prev, char *curr)
 {
-    int i;
+	int		i;
+	int		j;
+	int		size;
+	char	*merge;
 
-    i = 0;
-    if(!buffer)
-        return (NULL);
-    while (buffer[i])
-    {
-        if ((unsigned char)buffer[i] == (unsigned char)c)
-            return (&buffer[i]);
-        i++;
-    }
-    if ((unsigned char)buffer[i] == (unsigned char)c)
-            return (&buffer[i]);
-    return (NULL);
-}
-
-size_t  ft_strlen(const char *str)
-{
-    size_t i;
-
-    i = 0;
-    if(!str)
-        return (0);
-    while(str[i] && str[i] != '\n')
-    {
-        i++;
-    }
-    if(str[i] == '\0')
-        i++;
-    return(i);
+	i = ft_strlen_at(prev, '\0');
+	j = ft_strlen_at(curr, '\0');
+	size = i + j + 1;
+	if (!prev && !curr)
+		return (NULL);
+	merge = (char *)malloc(sizeof(char) * size);
+	if (!merge)
+		return (NULL);
+	if (prev)
+		ft_strncpy(merge, prev, i);
+	ft_strncpy(merge + i, curr, j);
+	free (prev);
+	return (merge);
 }

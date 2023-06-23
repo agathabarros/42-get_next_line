@@ -3,107 +3,108 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agpereir <agpereir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agathabarros <agathabarros@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 17:22:30 by agpereir          #+#    #+#             */
-/*   Updated: 2023/06/08 12:46:28 by agpereir         ###   ########.fr       */
+/*   Updated: 2023/06/23 14:58:11 by agathabarro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-# include <stdio.h>
-# include <unistd.h>
-# include <string.h>
-# include <stdlib.h>
 
-
-char *read_to_aux(int fd, char *str)
+char	*get_keep(char *buffer) //get_keep returns the string after the first '\n' or '\0'
 {
-    char *buffer;
-    int bytes;
-    
-    buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
-    if(!buffer)
-        return(NULL);
-    bytes = 1;
-    while(!ft_strchr(str, '\n') && bytes != 0)
+	int		i;
+	int		j;
+	int		size;
+	char	*keep;
+
+	i = ft_strlen_at(buffer, '\0'); //ft_strlen_at returns the length of the string until the first '\0' or '\n'
+	j = ft_strlen_at(buffer, '\n'); 
+	size = i - j + 1; 
+	if (!buffer[j])
+	{
+		free (buffer);
+		return (NULL);
+	}
+	keep = (char *)malloc(sizeof(char) * size);
+	if (!keep)
+		return (NULL);
+	j++;
+	ft_strncpy(keep, buffer + j, size);
+	free (buffer);
+	return (keep);
+}
+
+char	*get_line(char *buffer) 
+{
+	int		j;
+	char	*line;
+
+	j = ft_strlen_at(buffer, '\n');
+	if (buffer[j] == '\n')
+		j++;
+	line = (char *)malloc(sizeof(char) * (j + 1));
+	if (!line)
+		return (NULL);
+	ft_strncpy(line, buffer, j);
+	return (line);
+}
+
+char	*get_next_line(int fd)
+{
+	static char	*buffer;
+	char		*line;
+	int			bytes;
+	char		curr[BUFFER_SIZE + 1];
+
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	curr[0] = '\0';
+	bytes = 1;
+	while (!newline(curr) && bytes != 0)
+	{
+		bytes = read(fd, curr, BUFFER_SIZE);
+		if (bytes == -1)
+			return (NULL);
+		curr[bytes] = '\0';
+		buffer = ft_strjoin(buffer, curr);
+	}
+	line = get_line(buffer);
+	buffer = get_keep(buffer);
+	if (!line[0])
+	{
+		free (line);
+		return (NULL);
+	}
+	return (line);
+}
+
+/*int main(int argc, char **argv)
+{
+    int fd;
+    char *line;
+
+    if (argc == 2)
     {
-        bytes = read(fd, buffer, BUFFER_SIZE);
-        if(bytes == -1)
+        fd = open(argv[1], O_RDONLY);
+        while ((line = get_next_line(fd)))
         {
-            free(buffer);
-            return(NULL);
+            printf("%s\n", line);
+            free (line);
         }
-        buffer[bytes] = '\0';
-        if(!buffer)
-            return (NULL);
-        str = ft_strjoin(str, buffer);
-    }    
-    free(buffer);
-    return(str);
-}
-
-
-char *get_line(char *aux)
-{
-    int i;
-    char *str;
-
-    i = 0;
-    if (!aux[i])
-        return (NULL);
-    while (aux[i] && aux [i] != '\n')
-        i++;
-    if (aux[i] == '\0')
-        str = (char *)malloc(sizeof(char) * (i + 1));
-    else 
-        str = (char *)malloc(sizeof(char) * (i + 2));
-    if (!str)
-        return (NULL);
-    i = 0;
-    while (aux[i] && aux [i] != '\n')
-    {
-        str[i] = aux[i];
-        i++;
+        close(fd);
     }
-    if (aux[i] == '\n')
-        str[i] = '\n';
-    str[i] = '\n';
-    return (str);
-}
+    return (0);
+}*/
 
-char *new_aux(char *aux)
-{
-    int i;
-    int j;
-    char *str;
-    
-    i = 0;
-    j = 0;
-    while(aux[i] && aux[i] != '\n')
-        i++;
-    if(!aux[i])
-    {
-        free(aux);
-        return(NULL);
-    }
-    str = (char *)malloc(sizeof(char) * (ft_strlen(aux) - i + 1));
-    if(!str)
-        return(NULL);
-    i++;
-    while(aux[i])
-        str[j] = aux [i];
-        j++;
-        i++;
-    str[j] = '\0';
-    free(aux);
-    return(str);    
-}
-char *get_next_line(int fd)
+/*int main(void)
 {
     char    *line;
     static char *aux;
+    int     fd;
 
+    fd = open("test.txt", O_RDONLY);
     if (fd < 0 || BUFFER_SIZE <= 0)
         return (0);
     aux = read_to_aux(fd, aux);
@@ -112,4 +113,4 @@ char *get_next_line(int fd)
     line = get_line(aux);
     aux = new_aux(aux);
     return(line);    
-}
+}*/
