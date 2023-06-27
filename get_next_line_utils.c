@@ -6,7 +6,7 @@
 /*   By: agathabarros <agathabarros@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 16:44:57 by agpereir          #+#    #+#             */
-/*   Updated: 2023/06/27 23:12:25 by agathabarro      ###   ########.fr       */
+/*   Updated: 2023/06/27 23:22:55 by agathabarro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,12 @@ int	ft_strlen_at(char *str, char c)
 	i = 0;
 	if (!str)
 		return (0);
-	while (str[i] && str[i] != c)
-		i++;
+	 while (str[i])
+    {
+        if (str[i] == c)
+            return (i);
+        i++;
+    }
 	return (i);
 }
 
@@ -65,11 +69,10 @@ char	*ft_strjoin(char *prev, char *curr)
 	merge = (char *)malloc(sizeof(char) * size);
 	if (!merge)
 		return (NULL);
-	if (prev)
-	{
-		ft_strncpy(merge, prev, i);
-		free (prev);
-	}
-	ft_strncpy(merge + i, curr, j);
+	 if (prev)
+        ft_strncpy(merge, prev, i);
+    ft_strncpy(merge + i, curr, j);
+    merge[size - 1] = '\0';
+    free(prev);
 	return (merge);
 }
