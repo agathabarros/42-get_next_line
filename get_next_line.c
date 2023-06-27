@@ -6,7 +6,7 @@
 /*   By: agathabarros <agathabarros@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 17:22:30 by agpereir          #+#    #+#             */
-/*   Updated: 2023/06/27 20:10:01 by agathabarro      ###   ########.fr       */
+/*   Updated: 2023/06/27 23:14:50 by agathabarro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,18 @@ char	*get_keep(char *buffer) //get_keep returns the string after the first '\n' 
 	if (!buffer[j])
 	{
 		free (buffer);
+		buffer = NULL;
 		return (NULL);
 	}
 	keep = (char *)malloc(sizeof(char) * size);
 	if (!keep)
+	{
+		free(buffer);
 		return (NULL);
+	}
 	j++;
 	ft_strncpy(keep, buffer + j, size);
+	keep[size - 1] = '\0';
 	free (buffer);
 	return (keep);
 }
@@ -65,7 +70,7 @@ char	*get_next_line(int fd)
 	while (!newline(curr) && bytes != 0)
 	{
 		bytes = read(fd, curr, BUFFER_SIZE);
-		if (bytes == -1)
+		if (bytes < 0 )
 		{
 			free(buffer);
 			return (NULL);
@@ -82,38 +87,3 @@ char	*get_next_line(int fd)
 	}
 	return (line);
 }
-
-/*int main(int argc, char **argv)
-{
-    int fd;
-    char *line;
-
-    if (argc == 2)
-    {
-        fd = open(argv[1], O_RDONLY);
-        while ((line = get_next_line(fd)))
-        {
-            printf("%s\n", line);
-            free (line);
-        }
-        close(fd);
-    }
-    return (0);
-}*/
-
-/*int main(void)
-{
-    char    *line;
-    static char *aux;
-    int     fd;
-
-    fd = open("test.txt", O_RDONLY);
-    if (fd < 0 || BUFFER_SIZE <= 0)
-        return (0);
-    aux = read_to_aux(fd, aux);
-    if(!aux)
-        return(NULL);
-    line = get_line(aux);
-    aux = new_aux(aux);
-    return(line);    
-}*/

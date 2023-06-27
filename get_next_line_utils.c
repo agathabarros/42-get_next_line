@@ -6,7 +6,7 @@
 /*   By: agathabarros <agathabarros@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 16:44:57 by agpereir          #+#    #+#             */
-/*   Updated: 2023/06/23 09:37:28 by agathabarro      ###   ########.fr       */
+/*   Updated: 2023/06/27 23:12:25 by agathabarro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,13 @@ int	newline(char *l)
 	}
 	return (0);
 }
-
 char	*ft_strncpy(char *dst, char *src, int n)
 {
 	int	i;
 
 	i = 0;
+	if (!src || !dst)
+		return (NULL);
 	while (src[i] && i < n)
 	{
 		dst[i] = src[i];
@@ -48,7 +49,7 @@ char	*ft_strncpy(char *dst, char *src, int n)
 	dst[i] = '\0';
 	return (dst);
 }
-
+	
 char	*ft_strjoin(char *prev, char *curr)
 {
 	int		i;
@@ -65,8 +66,10 @@ char	*ft_strjoin(char *prev, char *curr)
 	if (!merge)
 		return (NULL);
 	if (prev)
+	{
 		ft_strncpy(merge, prev, i);
+		free (prev);
+	}
 	ft_strncpy(merge + i, curr, j);
-	free (prev);
 	return (merge);
 }
