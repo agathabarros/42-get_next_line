@@ -6,7 +6,7 @@
 /*   By: agathabarros <agathabarros@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 17:22:25 by agpereir          #+#    #+#             */
-/*   Updated: 2023/06/23 14:48:37 by agathabarro      ###   ########.fr       */
+/*   Updated: 2023/06/27 17:32:31 by agathabarro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 
 //get_next_line
 char	*get_keep(char *buffer);
-char	*get_line(char *buffer, int j);
+char	*get_line_gnl(char *buffer);
 char	*get_next_line(int fd);
 //get_next_line_utils
 char	*ft_strncpy(char *dst, char *src, int n);

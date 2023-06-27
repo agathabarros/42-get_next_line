@@ -6,7 +6,7 @@
 /*   By: agathabarros <agathabarros@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 17:22:30 by agpereir          #+#    #+#             */
-/*   Updated: 2023/06/23 14:58:11 by agathabarro      ###   ########.fr       */
+/*   Updated: 2023/06/27 20:10:01 by agathabarro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*get_keep(char *buffer) //get_keep returns the string after the first '\n' 
 	return (keep);
 }
 
-char	*get_line(char *buffer) 
+char	*get_line_gnl(char *buffer) 
 {
 	int		j;
 	char	*line;
@@ -66,11 +66,14 @@ char	*get_next_line(int fd)
 	{
 		bytes = read(fd, curr, BUFFER_SIZE);
 		if (bytes == -1)
+		{
+			free(buffer);
 			return (NULL);
+		}
 		curr[bytes] = '\0';
 		buffer = ft_strjoin(buffer, curr);
 	}
-	line = get_line(buffer);
+	line = get_line_gnl(buffer);
 	buffer = get_keep(buffer);
 	if (!line[0])
 	{
