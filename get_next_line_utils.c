@@ -72,7 +72,7 @@ char	*ft_strjoin(char *prev, char *curr)
 	 if (prev)
         ft_strncpy(merge, prev, i);
     ft_strncpy(merge + i, curr, j);
-    merge[size - 1] = '\0';
+
     free(prev);
 	return (merge);
 }

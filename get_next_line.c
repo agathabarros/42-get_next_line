@@ -25,18 +25,15 @@ char	*get_keep(char *buffer) //get_keep returns the string after the first '\n' 
 	if (!buffer[j])
 	{
 		free (buffer);
-		buffer = NULL;
 		return (NULL);
 	}
 	keep = (char *)malloc(sizeof(char) * size);
 	if (!keep)
 	{
-		free(buffer);
 		return (NULL);
 	}
 	j++;
 	ft_strncpy(keep, buffer + j, size);
-	keep[size - 1] = '\0';
 	free (buffer);
 	return (keep);
 }
@@ -70,9 +67,8 @@ char	*get_next_line(int fd)
 	while (!newline(curr) && bytes != 0)
 	{
 		bytes = read(fd, curr, BUFFER_SIZE);
-		if (bytes < 0 )
+		if (bytes == -1 )
 		{
-			free(buffer);
 			return (NULL);
 		}
 		curr[bytes] = '\0';

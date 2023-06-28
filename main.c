@@ -19,7 +19,7 @@
 
 int main(void)
 {
-	int fd = open("test.txt", O_RDONLY);
+	int fd = open("text.txt", O_RDONLY);
 	if (fd == -1)
 		return (1);
 	char *line = get_next_line(fd);
