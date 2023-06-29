@@ -89,10 +89,7 @@ char *read_line(char *buffer, int fd)
 		}
 		curr[bytes] = '\0';
 		if (!buffer)
-		{
-			buffer = malloc(sizeof(char) * 1);
-			buffer[0] = '\0';
-		}
+			buffer = ft_calloc(1, sizeof(char));
 		buffer = ft_strjoin(buffer, curr);
 	}
 	free(curr);

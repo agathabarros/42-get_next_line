@@ -22,7 +22,7 @@
 # include <fcntl.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
+#  define BUFFER_SIZE 10000000
 # endif
 
 //get_next_line
@@ -30,6 +30,7 @@ char	*get_keep(char *buffer);
 char	*get_line_gnl(char *buffer);
 char	*get_next_line(int fd);
 //get_next_line_utils
+void	*ft_calloc(size_t nitems, size_t size);
 int	ft_strlen( char *str);
 char	*ft_strjoin(char *s1, char *s2);
 int	    ft_strchr(char *str, char c);

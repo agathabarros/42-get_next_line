@@ -62,3 +62,19 @@ char	*ft_strjoin(char *str1, char *str2)
 	free(str1);
 	return (str);
 }
+void	*ft_calloc(size_t nitems, size_t size)
+{
+	char	*memory;
+	size_t	i;
+
+	i = 0;
+	memory = malloc(nitems * size);
+	if (memory == NULL)
+		return (0);
+	while (i < nitems * size)
+	{
+		memory[i] = 0;
+		i++;
+	}
+	return (memory);
+}
