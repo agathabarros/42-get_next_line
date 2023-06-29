@@ -12,74 +12,104 @@
 
 #include "get_next_line.h"
 
-char	*get_keep(char *buffer) //get_keep returns the string after the first '\n' or '\0'
+char	*get_keep(char *buffer) 
 {
 	int		i;
 	int		j;
 	int		size;
 	char	*keep;
 
-	i = ft_strlen_at(buffer, '\0'); //ft_strlen_at returns the length of the string until the first '\0' or '\n'
-	j = ft_strlen_at(buffer, '\n'); 
-	size = i - j + 1; 
-	if (!buffer[j])
+	i = 0;
+	while (buffer[i] && buffer[i] != '\n')
+		i++;
+	if(!buffer[i])
 	{
-		free (buffer);
-		return (NULL);
+		free(buffer);
+		return(0);
 	}
-	keep = (char *)malloc(sizeof(char) * size);
+	size = ft_strlen(buffer);
+	keep = malloc((size - i + 1) * sizeof(char));;
 	if (!keep)
-	{
-		return (NULL);
-	}
-	j++;
-	ft_strncpy(keep, buffer + j, size);
-	free (buffer);
-	return (keep);
+		return (0);
+	i++;
+	j = 0;
+	while(buffer[i])
+		keep[j++] = buffer[i++];
+	keep[j] = '\0';
+	free(buffer);
+	return(keep);
 }
 
 char	*get_line_gnl(char *buffer) 
 {
 	int		j;
+	int		i;
 	char	*line;
 
-	j = ft_strlen_at(buffer, '\n');
-	if (buffer[j] == '\n')
+	j = 0;
+	if (!buffer[j])
+		return (0);
+	while (buffer[j] && buffer[j] != '\n')
 		j++;
-	line = (char *)malloc(sizeof(char) * (j + 1));
+	line = (char *)malloc(sizeof(char) * (j + 2));
 	if (!line)
-		return (NULL);
-	ft_strncpy(line, buffer, j);
+		return (0);
+	i = 0;
+	while (buffer[i] && buffer[i] != '\n')
+	{
+		line[i] = buffer[i];
+		i++;
+	}
+	if (buffer[j] == '\n')
+	{
+		line[i] = buffer[i];
+		i++;
+	}
+	line [i] = '\0';
 	return (line);
+}
+
+char *read_line(char *buffer, int fd)
+{
+	int 	bytes;
+	char 	*curr;
+
+	curr = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!curr)
+		return (0);
+	bytes = 1;
+	while (bytes != 0 && !ft_strchr(buffer, '\n'))
+	{
+		bytes = read(fd, curr, BUFFER_SIZE);
+		if (bytes == -1 )
+		{
+			free(curr);
+			free(buffer);
+			return (0);
+		}
+		curr[bytes] = '\0';
+		if (!buffer)
+		{
+			buffer = malloc(sizeof(char) * 1);
+			buffer[0] = '\0';
+		}
+		buffer = ft_strjoin(buffer, curr);
+	}
+	free(curr);
+	return (buffer);
 }
 
 char	*get_next_line(int fd)
 {
 	static char	*buffer;
 	char		*line;
-	int			bytes;
-	char		curr[BUFFER_SIZE + 1];
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
-	curr[0] = '\0';
-	bytes = 1;
-	while (!newline(curr) && bytes != 0)
-	{
-		bytes = read(fd, curr, BUFFER_SIZE);
-		if (bytes == -1 )
-		{
-			return (NULL);
-		}
-		curr[bytes] = '\0';
-		buffer = ft_strjoin(buffer, curr);
-	}
+		return (0);
+	buffer = read_line(buffer, fd);
+	if (!buffer)
+		return (0);
 	line = get_line_gnl(buffer);
 	buffer = get_keep(buffer);
-	if (!line[0])
-	{
-		free (line);
-		return (NULL);
-	}
 	return (line);
 }

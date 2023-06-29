@@ -20,8 +20,6 @@
 int main(void)
 {
 	int fd = open("text.txt", O_RDONLY);
-	if (fd == -1)
-		return (1);
 	char *line = get_next_line(fd);
 	while (line)
 	{
@@ -29,6 +27,7 @@ int main(void)
 		free (line);
 		line = get_next_line(fd);
 	}
+	free(line);
 	close (fd);
 }
 

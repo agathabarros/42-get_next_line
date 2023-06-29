@@ -12,67 +12,53 @@
 
 #include "get_next_line.h"
 
-int	ft_strlen_at(char *str, char c)
+int	ft_strlen( char *str)
 {
 	int	i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		i++;
+	}
+	return (i);
+}
+
+int	ft_strchr(char *str, char c)
+{
+	int		i;
 
 	i = 0;
 	if (!str)
 		return (0);
-	 while (str[i])
-    {
-        if (str[i] == c)
-            return (i);
-        i++;
-    }
-	return (i);
-}
-
-int	newline(char *l)
-{
-	while (*l)
+	while (str[i])
 	{
-		if (*l == '\n')
+		if (str[i] == c)
 			return (1);
-		l++;
+		i++;
 	}
 	return (0);
 }
-char	*ft_strncpy(char *dst, char *src, int n)
-{
-	int	i;
 
-	i = 0;
-	if (!src || !dst)
-		return (NULL);
-	while (src[i] && i < n)
-	{
-		dst[i] = src[i];
-		i++;
-	}
-	dst[i] = '\0';
-	return (dst);
-}
-	
-char	*ft_strjoin(char *prev, char *curr)
+char	*ft_strjoin(char *str1, char *str2)
 {
 	int		i;
-	int		j;
-	int		size;
-	char	*merge;
+	int		a;
+	char	*str;
 
-	i = ft_strlen_at(prev, '\0');
-	j = ft_strlen_at(curr, '\0');
-	size = i + j + 1;
-	if (!prev && !curr)
-		return (NULL);
-	merge = (char *)malloc(sizeof(char) * size);
-	if (!merge)
-		return (NULL);
-	 if (prev)
-        ft_strncpy(merge, prev, i);
-    ft_strncpy(merge + i, curr, j);
-
-    free(prev);
-	return (merge);
+	i = ft_strlen(str1);
+	a = ft_strlen(str2);
+	str = malloc(sizeof(char) * ((i + a) + 1));
+	if (!str)
+		return (0);
+	i = 0;
+	a = 0;
+	while (str1[i])
+		str[a++] = str1[i++];
+	i = 0;
+	while (str2[i])
+		str[a++] = str2[i++];
+	str[a] = '\0';
+	free(str1);
+	return (str);
 }
