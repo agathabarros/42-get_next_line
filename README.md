@@ -4,6 +4,7 @@
   <img src="https://github.com/agathabarros/42-project-badges/blob/main/badges/get_next_linee.png"/>
 </p>
 
+## *Grade: 105 / 100*
 Get Next Line is a project you’ll likely encounter on your journey, and one which may give you a bit of a headache. Its purpose is to teach you some basic operations, and will greatly help you in the completion of other projects you’ll face later.
 
 Get Next Line focuses on the concept of file reading. This guide will cover this topic as best as it can, and guide you through the main parts of the program.
